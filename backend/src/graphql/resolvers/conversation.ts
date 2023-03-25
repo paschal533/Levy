@@ -42,8 +42,8 @@ const resolvers = {
           });
 
           /**
-           * Since above query does not work
-           */
+          * Since above query does not work
+          */
           return conversations.filter(
             (conversation) =>
               !!conversation.participants.find((p) => p.userId === userId)
@@ -122,7 +122,7 @@ const resolvers = {
               participants,
               userId
             );
-  
+
             return userIsParticipant;
           }
         ),
