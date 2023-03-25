@@ -12,6 +12,8 @@ import {
 } from "../../../../../backend/src/util/types";
 import { useRouter } from "next/router";
 import SkeletonLoader from "../../common/SkeletonLoader";
+import { useContext } from 'react';
+import { AuthContext } from "@/context/AuthContext";
 
 const ConversationWrapper = () => {
   const {
@@ -22,6 +24,8 @@ const ConversationWrapper = () => {
     } = useQuery<ConversationsData, null>(
       ConversationOperations.Queries.conversations
     );
+  const { userId } = useContext(AuthContext);
+
 
     const router = useRouter();
 
@@ -45,6 +49,75 @@ const ConversationWrapper = () => {
       if (hasSeenLatestMessage) return;
   
       // markConversationAsRead mutation
+      try {
+        await markConversationAsRead({
+          variables: {
+            userId,
+            conversationId,
+          },
+          optimisticResponse: {
+            markConversationAsRead: true,
+          },
+          update: (cache) => {
+            /**
+             * Get conversation participants from cache
+             */
+            const participantsFragment = cache.readFragment<{
+              participants: Array<ParticipantPopulated>;
+            }>({
+              id: `Conversation:${conversationId}`,
+              fragment: gql`
+                fragment Participants on Conversation {
+                  participants {
+                    user {
+                      id
+                      username
+                    }
+                    hasSeenLatestMessage
+                  }
+                }
+              `,
+            });
+  
+            if (!participantsFragment) return;
+  
+            const participants = [...participantsFragment.participants];
+  
+            const userParticipantIdx = participants.findIndex(
+              (p) => p.user.id === userId
+            );
+  
+            if (userParticipantIdx === -1) return;
+  
+            const userParticipant = participants[userParticipantIdx];
+  
+            /**
+             * Update participant to show latest message as read
+             */
+            participants[userParticipantIdx] = {
+              ...userParticipant,
+              hasSeenLatestMessage: true,
+            };
+  
+            /**
+             * Update cache
+             */
+            cache.writeFragment({
+              id: `Conversation:${conversationId}`,
+              fragment: gql`
+                fragment UpdatedParticipant on Conversation {
+                  participants
+                }
+              `,
+              data: {
+                participants,
+              },
+            });
+          },
+        });
+      } catch (error) {
+        console.log("onViewConversation error", error);
+      }
     };
 
     const subscribeToNewConversations = () => {
