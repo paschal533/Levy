@@ -51,10 +51,6 @@ const typeDefs = gql`
     conversationUpdated: ConversationUpdatedSubscriptionPayload
   }
 
-  type Subscription {
-    conversationDeleted: ConversationDeletedSubscriptionPayload
-  }
-
 `;
 
 export default typeDefs;
