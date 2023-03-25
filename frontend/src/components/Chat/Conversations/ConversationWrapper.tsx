@@ -22,6 +22,7 @@ const ConversationWrapper = () => {
     } = useQuery<ConversationsData, null>(
       ConversationOperations.Queries.conversations
     );
+
     const router = useRouter();
 
     const [markConversationAsRead] = useMutation<

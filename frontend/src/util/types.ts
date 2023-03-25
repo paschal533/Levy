@@ -1,7 +1,7 @@
 //import { Message } from "graphql-ws";
 import {
   ConversationPopulated,
-  //MessagePopulated,
+  MessagePopulated,
 } from "../../../backend/src/util/types";
 
 /**
@@ -83,7 +83,7 @@ export interface ConversationDeletedData {
 /**
  * Messages
  */
-/*export interface MessagesData {
+export interface MessagesData {
   messages: Array<MessagePopulated>;
 }
 
@@ -97,4 +97,4 @@ export interface MessageSubscriptionData {
       messageSent: MessagePopulated;
     };
   };
-}*/
+}

@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import MessagesHeader from "./Messages/Header";
-/*import MessageInput from "./Messages/Input";
-import Messages from "./Messages/Messages";*/
+import MessageInput from "./Messages/Input";
+import Messages from "./Messages/Messages";
 import NoConversation from "./NoConversationSelected";
 import { useContext } from 'react';
 import { AuthContext } from "@/context/AuthContext";
@@ -28,9 +28,9 @@ const FeedWrapper = () => {
                 flexGrow={1}
             >
                 <MessagesHeader userId={userId} conversationId={conversationId} />
-                {/*<Messages userId={userId} conversationId={conversationId} />*/}
+                <Messages userId={userId} conversationId={conversationId} />
             </Flex>
-            {/*<MessageInput conversationId={conversationId} />*/}
+            <MessageInput conversationId={conversationId} />
             </>
         ) : (
             <NoConversation />

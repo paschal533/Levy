@@ -15,7 +15,7 @@ import { GoPrimitiveDot } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineEdit } from "react-icons/ai";
-import { formatUsernames } from "../../../util/functions";
+import { formatUserImage, formatUsernames } from "../../../util/functions";
 import { ConversationPopulated } from "../../../../../backend/src/util/types";
 import Image from "next/image";
 
@@ -61,8 +61,6 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
     }
   };
 
-  console.log(conversation)
-  console.log(conversation.participants.length)
 
   return (
     <Stack
@@ -130,7 +128,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
           <GoPrimitiveDot fontSize={18} color="#6B46C1" />
         )}
       </Flex>
-      {conversation.participants.length > 2 ? <Avatar />: <Image src={conversation?.participants[1].user.image || "https://i.ibb.co/cQ5vw69/Lazy-Lion-NFT-1005x1024.png"} alt="profile" className="rounded" height={40} width={40} /> }
+      {conversation.participants.length > 2 ? <Avatar />: <Image src={formatUserImage(conversation.participants, userId) || "https://i.ibb.co/cQ5vw69/Lazy-Lion-NFT-1005x1024.png"} alt="profile" className="rounded" height={40} width={40} /> }
       <Flex justify="space-between" width="80%" height="100%">
         <Flex direction="column" width="70%" height="100%">
           <Text

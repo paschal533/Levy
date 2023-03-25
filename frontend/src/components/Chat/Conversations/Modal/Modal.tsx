@@ -175,7 +175,7 @@ const ConversationModal: React.FC<ModalProps> = ({
                   width="100%"
                   mt={6}
                   _hover={{ bg: "brand.100" }}
-                  //isLoading={createConversationLoading}
+                  isLoading={createConversationLoading}
                   onClick={onCreateConversation}
                 >
                   Create Conversation

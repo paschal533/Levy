@@ -8,6 +8,7 @@ import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 // Adapters
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import RPC from "../pages/api/web3RPC"; // for using web3.js
@@ -251,13 +252,18 @@ const useAuth = () => {
     }
   }
 
-  const signOut = () => {
-    logout()
-    setUserInfo({})
-    setCurrentAccount("")
-    setPrivatekey("")
-    setProvider(null)
-    setPass(false)
+  const router = useRouter();
+
+  const signOut = async () => {
+    await logout()
+    await router.push('/')
+    await localStorage.setItem("userId", "")
+    await setUserInfo({})
+    await setCurrentAccount("")
+    await setPrivatekey("")
+    await setProvider(null)
+    await setPass(false)
+    await window.location.reload(false)
   }
 
   return {
