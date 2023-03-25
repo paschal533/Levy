@@ -92,7 +92,94 @@ const resolvers = {
               console.log("createConversation error", error);
               throw new GraphQLError("Error creating conversation");
             }
-          },
+        },
+        markConversationAsRead: async function (
+          _: any,
+          args: { userId: string; conversationId: string },
+          context: GraphQLContext
+        ): Promise<boolean> {
+          const { userId : signer, prisma } = context;
+          const { userId, conversationId } = args;
+    
+          if (!signer) {
+            throw new GraphQLError("Not authorized");
+          }
+    
+          try {
+            const participant = await prisma.conversationParticipant.findFirst({
+              where: {
+                userId,
+                conversationId,
+              },
+            });
+    
+            /**
+             * Should always exists but being safe
+             */
+            if (!participant) {
+              throw new GraphQLError("Participant entity not found");
+            }
+    
+            await prisma.conversationParticipant.update({
+              where: {
+                id: participant.id,
+              },
+              data: {
+                hasSeenLatestMessage: true,
+              },
+            });
+    
+            return true;
+          } catch (error: any) {
+            console.log("markConversationAsRead error", error);
+            throw new GraphQLError(error?.message);
+          }
+        },
+        deleteConversation: async function (
+          _: any,
+          args: { conversationId: string },
+          context: GraphQLContext
+        ): Promise<boolean> {
+          const { userId, prisma, pubsub } = context;
+          const { conversationId } = args;
+    
+          if (!userId) {
+            throw new GraphQLError("Not authorized");
+          }
+    
+          try {
+            /**
+             * Delete conversation and all related entities
+             */
+            const [deletedConversation] = await prisma.$transaction([
+              prisma.conversation.delete({
+                where: {
+                  id: conversationId,
+                },
+                include: conversationPopulated,
+              }),
+              prisma.conversationParticipant.deleteMany({
+                where: {
+                  conversationId,
+                },
+              }),
+              prisma.message.deleteMany({
+                where: {
+                  conversationId,
+                },
+              }),
+            ]);
+    
+            pubsub.publish("CONVERSATION_DELETED", {
+              conversationDeleted: deletedConversation,
+            });
+          } catch (error: any) {
+            console.log("deleteConversation error", error);
+            throw new GraphQLError("Failed to delete conversation");
+          }
+    
+          return true;
+        },
     },
 
     Subscription: {
