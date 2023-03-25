@@ -20,9 +20,16 @@ const typeDefs = gql`
     deleteConversation(conversationId: String!): Boolean
   }
 
-
   type CreateConversationResponse {
     conversationId: String
+  }
+
+  type ConversationUpdatedSubscriptionPayload {
+    conversation: Conversation
+  }
+
+  type ConversationDeletedSubscriptionPayload {
+    id: String
   }
 
   type Conversation {
@@ -51,6 +58,9 @@ const typeDefs = gql`
     conversationUpdated: ConversationUpdatedSubscriptionPayload
   }
 
+  type Subscription {
+    conversationDeleted: ConversationDeletedSubscriptionPayload
+  }
 `;
 
 export default typeDefs;

@@ -4,7 +4,9 @@ import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import ConversationList from "./ConversationList";
 import ConversationOperations from "../../../graphql/operations/conversation";
 import {
+  ConversationDeletedData,
   ConversationsData,
+  ConversationUpdatedData,
 } from "../../../util/types";
 import {
   ConversationPopulated,
@@ -24,15 +26,72 @@ const ConversationWrapper = () => {
     } = useQuery<ConversationsData, null>(
       ConversationOperations.Queries.conversations
     );
-  const { userId } = useContext(AuthContext);
-
-
-    const router = useRouter();
+  const { userId } = useContext(AuthContext)
+  const router = useRouter();
+  const {
+    query: { conversationId },
+  } = router;
 
     const [markConversationAsRead] = useMutation<
       { markConversationAsRead: boolean },
       { userId: string; conversationId: string }
     >(ConversationOperations.Mutations.markConversationAsRead);
+
+    useSubscription<ConversationUpdatedData, null>(
+      ConversationOperations.Subscriptions.conversationUpdated,
+      {
+        onData: ({ client, data }) => {
+          const { data: subscriptionData } = data;
+  
+          if (!subscriptionData) return;
+  
+          const {
+            conversationUpdated: { conversation: updatedConversation },
+          } = subscriptionData;
+  
+          const currentlyViewingConversation =
+            updatedConversation.id === conversationId;
+  
+          if (currentlyViewingConversation) {
+            onViewConversation(conversationId, false);
+          }
+        },
+      }
+    );
+  
+    useSubscription<ConversationDeletedData, null>(
+      ConversationOperations.Subscriptions.conversationDeleted,
+      {
+        onData: ({ client, data }) => {
+          console.log("HERE IS SUB DATA", data);
+          const { data: subscriptionData } = data;
+  
+          if (!subscriptionData) return;
+  
+          const existing = client.readQuery<ConversationsData>({
+            query: ConversationOperations.Queries.conversations,
+          });
+  
+          if (!existing) return;
+  
+          const { conversations } = existing;
+          const {
+            conversationDeleted: { id: deletedConversationId },
+          } = subscriptionData;
+  
+          client.writeQuery<ConversationsData>({
+            query: ConversationOperations.Queries.conversations,
+            data: {
+              conversations: conversations.filter(
+                (conversation) => conversation.id !== deletedConversationId
+              ),
+            },
+          });
+  
+          router.push("/");
+        },
+      }
+    );
 
     const onViewConversation = async (
       conversationId: string,

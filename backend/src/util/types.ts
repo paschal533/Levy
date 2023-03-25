@@ -60,7 +60,7 @@ export type ParticipantPopulated = Prisma.ConversationParticipantGetPayload<{
   include: typeof participantPopulated;
 }>;
 
-/*export interface ConversationUpdatedSubscriptionPayload {
+export interface ConversationUpdatedSubscriptionPayload {
   conversationUpdated: {
     conversation: ConversationPopulated;
   };
@@ -68,7 +68,7 @@ export type ParticipantPopulated = Prisma.ConversationParticipantGetPayload<{
 
 export interface ConversationDeletedSubscriptionPayload {
   conversationDeleted: ConversationPopulated;
-}*/
+}
 
 /**
  * Messages

@@ -68,11 +68,11 @@ export interface CreateConversationInput {
   userId: string;
 }
 
-/*export interface ConversationUpdatedData {
+export interface ConversationUpdatedData {
   conversationUpdated: {
     conversation: ConversationPopulated;
   };
-}*/
+}
 
 export interface ConversationDeletedData {
   conversationDeleted: {

@@ -1,4 +1,7 @@
-import { GraphQLContext, ConversationPopulated } from "../../util/types";
+import { GraphQLContext,  
+  ConversationDeletedSubscriptionPayload,
+  ConversationPopulated,
+  ConversationUpdatedSubscriptionPayload, } from "../../util/types";
 import { GraphQLError } from "graphql";
 import { Prisma } from "@prisma/client";
 import { withFilter } from "graphql-subscriptions";
@@ -211,6 +214,60 @@ const resolvers = {
             );
 
             return userIsParticipant;
+          }
+        ),
+      },
+      conversationUpdated: {
+        subscribe: withFilter(
+          (_: any, __: any, context: GraphQLContext) => {
+            const { pubsub } = context;
+  
+            return pubsub.asyncIterator(["CONVERSATION_UPDATED"]);
+          },
+          (
+            payload: ConversationUpdatedSubscriptionPayload,
+            _: any,
+            context: GraphQLContext
+          ) => {
+            const { userId } = context;
+  
+            if (!userId) {
+              throw new GraphQLError("Not authorized");
+            }
+  
+            const {
+              conversationUpdated: {
+                conversation: { participants },
+              },
+            } = payload;
+  
+            return userIsConversationParticipant(participants, userId);
+          }
+        ),
+      },
+      conversationDeleted: {
+        subscribe: withFilter(
+          (_: any, __: any, context: GraphQLContext) => {
+            const { pubsub } = context;
+  
+            return pubsub.asyncIterator(["CONVERSATION_DELETED"]);
+          },
+          (
+            payload: ConversationDeletedSubscriptionPayload,
+            _: any,
+            context: GraphQLContext
+          ) => {
+            const { userId } = context;
+  
+            if (!userId) {
+              throw new GraphQLError("Not authorized");
+            }
+  
+            const {
+              conversationDeleted: { participants },
+            } = payload;
+  
+            return userIsConversationParticipant(participants, userId);
           }
         ),
       },
