@@ -300,7 +300,7 @@ export const conversationPopulated =
         sender: {
           select: {
             id: true,
-            username: true,
+            //username: true,
           },
         },
       },
