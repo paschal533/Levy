@@ -32,6 +32,7 @@ const useAuth = () => {
   const [balance, setBalance] = useState(null);
   const [pass, setPass] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>(null);
+  const [conversactionAddress, setConversationAddress] = useState<any>("");
 
   useEffect(() => {
     const init = async () => {
@@ -278,7 +279,9 @@ const useAuth = () => {
     pass,
     setPass,
     setUserId,
-    userId
+    setConversationAddress,
+    userId,
+    conversactionAddress
   };
 };
 

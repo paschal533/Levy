@@ -18,6 +18,7 @@ const FeedWrapper = () => {
         display={{ base: conversationId ? "flex" : "none", md: "flex" }}
         width="100%"
         direction="column"
+        mb={2}
         >
         {conversationId && typeof conversationId === "string" ? (
             <>

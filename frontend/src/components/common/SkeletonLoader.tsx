@@ -19,7 +19,7 @@ const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
           startColor="blackAlpha.400"
           endColor="whiteAlpha.300"
           height={height}
-          width={{ base: "full" || width }}
+          width={width ? width : { base: "full" || width }}
           borderRadius={4}
         />
       ))}

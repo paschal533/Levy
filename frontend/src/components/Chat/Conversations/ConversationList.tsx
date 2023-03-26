@@ -22,7 +22,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   onViewConversation
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { signOut, userId } = useContext(AuthContext);
+  const { signOut, userId, setConversationAddress } = useContext(AuthContext);
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
   const [deleteConversation] = useMutation<{
@@ -63,7 +63,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
 
     return (
     <Box
-      width={{ base: "100%", md: "400px" }}
+      width={{ base: "100%", md: "320px" }}
       position="relative"
       height="100%"
       overflow="hidden"
@@ -92,11 +92,13 @@ const ConversationList: React.FC<ConversationListProps> = ({
               key={conversation.id}
               userId={userId}
               conversation={conversation}
-              onClick={() =>
+              onClick={() => {
                 onViewConversation(
                   conversation.id,
                   participant?.hasSeenLatestMessage
-                )
+                ),
+                setConversationAddress(conversation?.conversationAddress)
+              }
               }
               onDeleteConversation={onDeleteConversation}
               hasSeenLatestMessage={participant?.hasSeenLatestMessage}

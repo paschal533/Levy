@@ -212,7 +212,7 @@ const ConversationWrapper = () => {
     
     return (
         <Box
-          width={{ base: "100%", md: "430px" }}
+          width={{ base: "100%", md: "350px" }}
           flexDirection="column"
           bg="whiteAlpha.50"
           gap={4}
@@ -220,7 +220,7 @@ const ConversationWrapper = () => {
           px={3}
         >
            {conversationsLoading ? (
-              <SkeletonLoader count={7} height="80px" />
+              <SkeletonLoader width="320px" count={7} height="80px" />
             ) : (
               <ConversationList
                 conversations={conversationsData?.conversations || []}

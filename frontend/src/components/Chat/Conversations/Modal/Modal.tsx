@@ -78,7 +78,7 @@ const ConversationModal: React.FC<ModalProps> = ({
 
       const safeAccountConfig: SafeAccountConfig = {
         owners: participantAddresses,
-        threshold: 2,
+        threshold: participantAddresses.length,
         // ... (Optional params)
       }
 

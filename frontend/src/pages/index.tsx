@@ -1,14 +1,14 @@
 import Head from 'next/head'
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useContext, useEffect } from 'react';
 import { AuthContext } from "@/context/AuthContext";
-//import Chat from "../components/Chat/Chat";
 import Auth from "../components/Auth/Auth";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import UserOperations from "../graphql/operations/user";
 import { CreateUserData, CreateUserVariables, SearchUserData, SearchUserInput } from "../util/types";
 import Chat from '@/components/Chat/Chat';
 import toast from "react-hot-toast";
+import Sidebar from "@/components/Sidebar";
 
 export default function Home() {
   const { setPass, signOut, pass, setUserId, userInfo, privateKey, currentAccount } = useContext(AuthContext);
@@ -66,7 +66,10 @@ export default function Home() {
   return (
     <Box>
       {pass ? (
+        <Flex>
+        <Sidebar />
         <Chat />
+        </Flex>
       ) : (
         <Auth reloadSession={reloadSession} />
       )}
