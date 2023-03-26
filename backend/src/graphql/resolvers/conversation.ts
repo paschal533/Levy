@@ -293,7 +293,7 @@ export const participantPopulated =
 export const conversationPopulated =
   Prisma.validator<Prisma.ConversationInclude>()({
     participants: {
-      //include: participantPopulated,
+      include: participantPopulated,
     },
     latestMessage: {
       include: {
