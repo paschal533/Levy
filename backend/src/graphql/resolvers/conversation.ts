@@ -299,7 +299,7 @@ export const conversationPopulated =
       include: {
         sender: {
           select: {
-            id: true,
+            //id: true,
             username: true,
           },
         },
