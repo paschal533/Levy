@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import { useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -30,7 +31,7 @@ const NFTCard = ({ nft, onProfilePage } : any) => {
           <div className="flexBetween mt-1 minlg:mt-3 flex-row xs:flex-col xs:items-start xs:mt-3">
             <p className="font-poppins text-white font-semibold text-md minlg:text-lg">
               {nft.price}
-              <span className="font-normal">xDAI</span>
+              <span className="font-normal ml-2">xDAI</span>
             </p>
             <p className="font-poppins text-white font-semibold text-md minlg:text-lg">
               {shortenAddress(onProfilePage ? nft.owner : nft.seller)}

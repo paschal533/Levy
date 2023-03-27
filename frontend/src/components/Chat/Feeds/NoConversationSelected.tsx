@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { BiMessageSquareDots } from "react-icons/bi";

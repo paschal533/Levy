@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -166,11 +167,11 @@ const AssetDetails = () => {
             </div>
             <div className="flex flex-row mt-10">
               {provider ? (
-                currentAccount === nft.seller.toLowerCase() ? (
+                currentAccount.toLowerCase() === nft.seller.toLowerCase() ? (
                   <p className="font-poppins text-white font-normal text-base border border-gray p-2">
                     You cannot buy your own NFT
                   </p>
-                ) : currentAccount === nft.owner.toLowerCase() ? (
+                ) : currentAccount.toLowerCase() === nft.owner.toLowerCase() ? (
                   <NFTButton
                     btnName="List on Marketplace"
                     btnType="primary"
@@ -270,7 +271,7 @@ const AssetDetails = () => {
                     btnName="Check it out"
                     btnType="primary"
                     classStyles="sm:mr-0 sm:mb-5 rounded-xl"
-                    handleClick={() => router.push("/my-nfts")}
+                    handleClick={() => router.push("/")}
                   />
                 </div>
               }

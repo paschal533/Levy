@@ -1,3 +1,4 @@
+// @ts-nocheck 
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import { isAddress } from "@ethersproject/address";

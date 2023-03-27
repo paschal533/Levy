@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import { useQuery } from "@apollo/client";
 import { Button, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";

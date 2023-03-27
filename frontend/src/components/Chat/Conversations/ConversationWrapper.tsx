@@ -1,3 +1,4 @@
+// @ts-nocheck 
 import { Box } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
@@ -100,8 +101,8 @@ const ConversationWrapper = () => {
       /**
        * 1. Push the conversationId to the router query params
        */
-      router.push({ query: { conversationId } });
-  
+      router.push({ query: { page: "chat", conversationId } });
+
       /**
        * 2. Mark the conversation as read
        */

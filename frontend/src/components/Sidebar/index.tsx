@@ -42,17 +42,17 @@ const Sidebar = () => {
                 </Flex>
                  
                  
-                <Flex onClick={() => { setItem("chat"), router.push("/")}} py={2} px={2} color={`${item == "chat" && "#4FD8E0"}`} bg={`${item == "chat" && "whiteAlpha.200"}`} borderRadius={5} _hover={{ cursor:"pointer", bg:"whiteAlpha.300" }} alignItems="center" alignContent="center"> 
+                <Flex onClick={() => { setItem("chat"), onClick('chat')}} py={2} px={2} color={`${item == "chat" && "#4FD8E0"}`} bg={`${item == "chat" && "whiteAlpha.200"}`} borderRadius={5} _hover={{ cursor:"pointer", bg:"whiteAlpha.300" }} alignItems="center" alignContent="center"> 
                 <BsChatDots fontSize={25} />
                 <Text ml={5} fontSize={20} fontWeight="bold" >Chats</Text>
                 </Flex>
                 
-                <Flex onClick={() => {setItem("nft"), onClick("nft-store")}} py={2} px={2}color={`${item == "nft" && "#4FD8E0"}`} bg={`${item == "nft" && "whiteAlpha.200"}`} borderRadius={5} _hover={{ cursor:"pointer", bg:"whiteAlpha.300" }} alignItems="center" alignContent="center">
+                <Flex onClick={() => {setItem("nft"), router.push("/")}} py={2} px={2}color={`${item == "nft" && "#4FD8E0"}`} bg={`${item == "nft" && "whiteAlpha.200"}`} borderRadius={5} _hover={{ cursor:"pointer", bg:"whiteAlpha.300" }} alignItems="center" alignContent="center">
                 <TbBuildingStore fontSize={25} />
                 <Text ml={5} fontSize={20} fontWeight="bold" >NFTs</Text>
                 </Flex>
 
-                <Flex onClick={() => {setItem("buy"), onClick("buy-crypto")}} py={2} px={2}color={`${item == "buy" && "#4FD8E0"}`} bg={`${item == "buy" && "whiteAlpha.200"}`} borderRadius={5} _hover={{ cursor:"pointer", bg:"whiteAlpha.300" }} alignItems="center" alignContent="center">
+                <Flex onClick={() => {setItem("buy"), onClick("buy")}} py={2} px={2}color={`${item == "buy" && "#4FD8E0"}`} bg={`${item == "buy" && "whiteAlpha.200"}`} borderRadius={5} _hover={{ cursor:"pointer", bg:"whiteAlpha.300" }} alignItems="center" alignContent="center">
                 <IoMdWallet fontSize={25} />
                 <Text ml={5} fontSize={20} fontWeight="bold" >Buy</Text>
                 </Flex>

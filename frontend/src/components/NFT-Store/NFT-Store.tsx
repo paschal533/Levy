@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import Banner from "../Profile/Banner";
 import { useEffect, useState, useRef, useContext } from "react";
 import { useRouter } from "next/router";
@@ -15,16 +16,14 @@ import { makeid } from "../../util/makeId";
 import { Box } from "@chakra-ui/react";
 
 const NFT = () => {
-  const { fetchNFTs } = useContext(FetchContext);
-  const [nfts, setNfts] = useState([]);
-  const [nftsCopy, setNftsCopy] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const {  nfts, isLoading, nftsCopy, setNfts, setNftsCopy } = useContext(FetchContext);
   const [hideButtons, setHideButtons] = useState(false);
   const [activeSelect, setActiveSelect] = useState("Recently Added");
 
   const scrollRef = useRef(null);
   const parentRef = useRef(null);
   const router = useRouter();
+
 
   const onHandleSearch = (value : any) => {
     const filteredNfts = nfts.filter(({ name }) =>
@@ -80,6 +79,8 @@ const NFT = () => {
     router.push({ query: { create } });
   }
 
+  const creators = getCreators(nfts);
+
   return (
     <>
   <Box overflowY="scroll" height="100vh" width="88vw" color="white" className="overflow-x-hidden" bg="whiteAlpha.50">
@@ -96,7 +97,7 @@ const NFT = () => {
           show
         />
 
-        <>
+       {!isLoading ? ( <>
           <div>
             <div className="flex w-full justify-between">
               <h1 className="font-poppins   text-4xl minlg:text-4xl font-semibold ml-4 xs:ml-0">
@@ -105,7 +106,7 @@ const NFT = () => {
               <NFTButton
                 btnName="create NFT"
                 btnType="primary"
-                classStyles="text-[23px] rounded-xl"
+                classStyles="text-[23px] text-xl rounded-xl"
                 handleClick={() => onClick("create-nft")}
               />
             </div>
@@ -118,7 +119,7 @@ const NFT = () => {
                 className="flex flex-row w-full overflow-x-scroll no-scrollbar select-none"
                 ref={scrollRef}
               >
-                {/*creators.map((creator, i) => (
+                {creators.map((creator, i) => (
                     <CreatorCard
                       key={creator.seller}
                       rank={i + 1}
@@ -126,8 +127,8 @@ const NFT = () => {
                       creatorName={shortenAddress(creator.seller)}
                       creatorEths={creator.sumall}
                     />
-                  ))*/}
-                {[2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                  ))}
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].slice(creators.length, 10).map((i) => (
                   <CreatorCard
                     key={`creator-${i}`}
                     rank={i}
@@ -182,23 +183,10 @@ const NFT = () => {
               </div>
             </div>
             <div className="mt-3 w-full flex flex-wrap justify-start md:justify-center">
-              {/*nfts.map((nft) => <NFTCard key={nft.tokenId} nft={nft} />)*/}
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                <NFTCard
-                  key={`nft-${i}`}
-                  nft={{
-                    i,
-                    name: `Nifty NFT ${i}`,
-                    price: (10 - i * 0.534).toFixed(2),
-                    seller: `0x${makeid(3)}...${makeid(4)}`,
-                    owner: `0x${makeid(3)}...${makeid(4)}`,
-                    description: "Cool NFT on Sale",
-                  }}
-                />
-              ))}
+              {nfts.map((nft) => <NFTCard key={nft?.tokenId} nft={nft} />)}
             </div>
           </div>
-        </>
+        </>) : <div className="mt-20"><Loader /></div>}
       </div>
     </div>
     </Box>

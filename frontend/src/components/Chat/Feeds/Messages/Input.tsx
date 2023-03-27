@@ -100,6 +100,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           placeholder="New message"
           size="md"
           resize="none"
+          borderColor= "white"
           _focus={{
             boxShadow: "none",
             border: "1px solid",

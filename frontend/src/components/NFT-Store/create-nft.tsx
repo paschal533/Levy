@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import { useState, useMemo, useCallback, useContext } from "react";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { useRouter } from "next/router";
@@ -11,7 +12,7 @@ import NFTButton from "./NFTButton"
 import NFTInput from "./NFTInput"
 import Loader from "./Loader";
 import images from "../../../assets";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 const projectId = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID;
 const projectSecret = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_SECRET;
@@ -30,8 +31,7 @@ const client = ipfsHttpClient({
 
 const CreateItem = () => {
   const { provider, login } = useContext(AuthContext);
-  const { createSale } = useContext(FetchContext)
-  const isLoadingNFT = false;
+  const { createSale, isLoadingNFT } = useContext(FetchContext)
   const [fileUrl, setFileUrl] = useState<string>("");
   const { theme } = useTheme();
 
@@ -90,16 +90,20 @@ const CreateItem = () => {
       const url = `https://levy.infura-ipfs.io/ipfs/${added.path}`;
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
       await createSale(url, formInput.price);
-      router.push("/nft-store");
+      router.push('/')
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
   };
 
+
   if (isLoadingNFT) {
     return (
-      <div className="flexCenter" style={{ height: "51vh" }}>
+      <div className="flexCenter justify-center text-center w-full" style={{ height: "51vh" }}>
+        <Flex flexDirection="column">
         <Loader />
+        <Text>Creating your NFT...</Text>
+        </Flex>
       </div>
     );
   }

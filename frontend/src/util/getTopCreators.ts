@@ -1,3 +1,4 @@
+// @ts-nocheck 
 export const getCreators = (array : any) => {
   const finalized = [];
 

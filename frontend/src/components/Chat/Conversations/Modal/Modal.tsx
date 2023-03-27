@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   Button,

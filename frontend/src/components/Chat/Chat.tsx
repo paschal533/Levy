@@ -16,15 +16,15 @@ const Chat = () => {
   const { conversactionAddress } = useContext(AuthContext);
   const { page } = router.query;
   const { conversationId } = router.query;
-  const { i, create } = router.query;
+  const { price, create } = router.query;
 
   return (
     <>
-    {!page && !i && !create ? (<Flex overflowY="scroll" borderRadius={30} height="100vh" width="100vw" overflowX="hidden">
+    {!page && !price && !create ? (<NFTStore />) : page === "profile" ? (<Profile />) : page === "buy" ? (<Buy />) : create == "create-nft"? (<CreateNFT />) : price ? (<NFTDetails />) : (<Flex overflowY="scroll" borderRadius={30} height="100vh" width="100vw" overflowX="hidden">
         <ConversationWrapper />
         <FeedWrapper />
         {conversationId && conversactionAddress !== "0x0000000000000000000000000000000000000000" ? <SafeDetails /> : null}
-    </Flex>) : page === "profile" ? (<Profile />) : page === "nft-store" ? (<NFTStore />) : create == "create-nft"? (<CreateNFT />) : i ? (<NFTDetails />) : (<Buy />)}
+    </Flex>)}
     </>
   )
 }
