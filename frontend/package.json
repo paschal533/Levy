@@ -6,13 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "generate-types": "typechain --target=ethers-v5 'contracts/*.json'"
   },
   "dependencies": {
     "@apollo/client": "^3.7.10",
     "@chakra-ui/react": "^2.5.2",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@gelatonetwork/gasless-onboarding": "^0.0.3",
     "@safe-global/onramp-kit": "^0.1.0-alpha.2",
     "@safe-global/safe-core-sdk": "^3.3.2",
     "@safe-global/safe-core-sdk-types": "^1.9.0",
@@ -33,12 +37,16 @@
     "framer-motion": "^10.8.5",
     "graphql": "^16.6.0",
     "graphql-ws": "^5.12.0",
+    "ipfs-http-client": "^60.0.0",
     "next": "13.2.4",
+    "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
-    "typescript": "5.0.2"
+    "typescript": "5.0.2",
+    "web3modal": "^1.9.12"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

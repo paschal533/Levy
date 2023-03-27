@@ -25,12 +25,15 @@ const Auth: React.FunctionComponent<IAuthProps> = ({
   return (
     <Center height="100vh">
       <Stack spacing={8} align="center"> 
-        <Text fontSize="3xl">MessengerQL</Text>
+      <Flex alignItems="center" alignContent="center">
+            <Image src="./images/logo.png" height={50} width={70} alt="logo" />
+            <Text ml={2} fontSize="3xl" color="white" fontWeight="bold" >Levy</Text>
+      </Flex>
         <Button
           onClick={login}
-          leftIcon={<Image height="20px" src="/images/web3auth.png" />}
+          leftIcon={<Image height="20px" src="/Gelato_logo.jpeg" />}
         >
-          Continue with Web3Auth
+          Continue with Gelato
         </Button>
       </Stack>
     </Center>

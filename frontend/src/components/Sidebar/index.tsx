@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Sidebar = () => {
-    const [item, setItem] = useState<string>("chat")
+    const [item, setItem] = useState<string>("nft")
     const router = useRouter();
 
     const onClick = (page : string) => {
@@ -22,7 +22,7 @@ const Sidebar = () => {
         flexDirection="column"
         justifyContent="center"
         alignContent="center"
-        bg="whiteAlpha.90"
+        className="sticky z-10"
         gap={4}
         >
             <Flex py={2} onClick={() => router.push("/")} px={2} borderRadius={5} _hover={{ cursor:"pointer" }} alignItems="center" alignContent="center">

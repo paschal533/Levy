@@ -153,7 +153,6 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
           )}
         </Flex>
         <Text
-          color="whiteAlpha.700"
           textAlign="right"
           position="absolute"
           right={4}

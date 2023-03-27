@@ -10,11 +10,16 @@ import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plu
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import {
+  GaslessOnboarding,
+  GaslessWalletConfig,
+  GaslessWalletInterface,
+  LoginConfig,
+} from "@gelatonetwork/gasless-onboarding";
 
 import RPC from "../pages/api/web3RPC"; // for using web3.js
 
-const clientId =
-  "BDhwzrIR2epApEX3gpXuY5XraYFEwx7_L4OihzMSn3EMkSMsTrDBamIJQ8zcwHY0MvTQebHvStZ6OdjoJLi7yj0"; // get from https://dashboard.web3auth.io
+const clientId = process.env.NEXT_PUBLIC_WEB3AUTHCLIENTID; // get from https://dashboard.web3auth.io
 
 interface user {
   idToken: string;
@@ -24,7 +29,7 @@ interface user {
 }
 
 const useAuth = () => {
-  const [web3auth, setWeb3auth] = useState(null);
+  const [gaslessOnboarding, setGaslessOnboarding] = useState<any>(null);
   const [provider, setProvider] = useState(null);
   const [currentAccount, setCurrentAccount] = useState<string>("");
   const [privateKey, setPrivatekey] = useState<string>("");
@@ -37,92 +42,28 @@ const useAuth = () => {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3Auth({
-          clientId,
-          eb3AuthNetwork: "cyan",
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-          uiConfig: {
-            theme: "dark",
-            loginMethodsOrder: ["twitter", "google"],
-          },
-          defaultLanguage: "en",
-          modalZIndex: "99998",
-        });
 
-        // plugins and adapters are optional and can be added as per your requirement
-        // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/
+        const API = process.env.NEXT_PUBLIC_GELATO_API_KEY;
+        const gaslessWalletConfig: GaslessWalletConfig = { API };
+          const loginConfig: LoginConfig = {
+            domains: [window.location.origin],
+            chain: {
+              id: 5,
+              rpcUrl: "https://rpc.ankr.com/eth_goerli",
+            }
+          };
+          const gaslessOnboarding = new GaslessOnboarding(
+            loginConfig,
+            gaslessWalletConfig
+          );
 
-        // adding torus wallet connector plugin
-
-        const torusPlugin = new TorusWalletConnectorPlugin({
-          torusWalletOpts: {},
-          walletInitOptions: {
-            whiteLabel: {
-              theme: { isDark: true, colors: { primary: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-            },
-            useWalletConnect: true,
-            enableLogging: true,
-          },
-        });
-        await web3auth.addPlugin(torusPlugin);
-
-        // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
-
-        // adding wallet connect v1 adapter
-
-        const walletConnectV1Adapter = new WalletConnectV1Adapter({
-          adapterSettings: {
-            bridge: "https://bridge.walletconnect.org",
-          },
-          clientId,
-        });
-
-        web3auth.configureAdapter(walletConnectV1Adapter);
-
-        // adding metamask adapter
-
-        const metamaskAdapter = new MetamaskAdapter({
-          clientId,
-          sessionTime: 3600, // 1 hour in seconds
-          web3AuthNetwork: "cyan",
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-        });
-        // we can change the above settings using this function
-        metamaskAdapter.setAdapterSettings({
-          sessionTime: 86400, // 1 day in seconds
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x89",
-            rpcTarget: "https://rpc-mainnet.matic.network", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-          web3AuthNetwork: "cyan",
-        });
-
-        // it will add/update  the metamask adapter in to web3auth class
-        web3auth.configureAdapter(metamaskAdapter);
-
-        const torusWalletAdapter = new TorusWalletAdapter({
-          clientId,
-        });
-
-        // it will add/update  the torus-evm adapter in to web3auth class
-        web3auth.configureAdapter(torusWalletAdapter);
-
-        setWeb3auth(web3auth);
-
-        await web3auth.initModal();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+          setGaslessOnboarding(gaslessOnboarding)
+          await gaslessOnboarding.init();
+          const provider = gaslessOnboarding.getProvider();
+          if(!provider) return;
+         
+        if (provider) {
+          setProvider(provider);
         }
       } catch (err) {
         console.error(err);
@@ -146,112 +87,59 @@ const useAuth = () => {
   }, [provider]);
 
   const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!gaslessOnboarding) {
       return;
     }
-    const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
-  };
-
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
+    await gaslessOnboarding.login();
+    const provider = gaslessOnboarding.getProvider();
+    console.log(provider)
+    setProvider(provider);
   };
 
   const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!gaslessOnboarding) {
       return;
     }
-    const user = await web3auth.getUserInfo();
-    setUserInfo(user);
-    uiConsole(user);
+    const data = await gaslessOnboarding.getUserInfo();
+    setUserInfo(data);
   };
 
   const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!gaslessOnboarding) {
       return;
     }
-    await web3auth.logout();
+    await gaslessOnboarding.logout();
     setProvider(null);
   };
 
-  const getChainId = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const chainId = await rpc.getChainId();
-    uiConsole(chainId);
-  };
 
   const getAccounts = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const address = await rpc.getAccounts();
     setCurrentAccount(address);
-    uiConsole(address);
   };
 
   const getBalance = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const balance = await rpc.getBalance();
     setBalance(balance);
-    uiConsole(balance);
   };
 
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
-  };
 
   const getPrivateKey = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     setPrivatekey(privateKey);
-    uiConsole(privateKey);
   };
-
-  function uiConsole(...args) {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const router = useRouter();
 

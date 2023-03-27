@@ -38,7 +38,6 @@ const SafeDetails = () => {
         const getPendingTransactions = async () => {
                 try{
                     if(conversactionAddress){
-                        console.log("kkkk")
                         const RPC_URL='https://eth-goerli.public.blastapi.io'
                         const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
                         const owner1Signer = new ethers.Wallet(privateKey, provider)
@@ -150,8 +149,8 @@ const SafeDetails = () => {
                     <div className="p-2 ml-3 w-[150px] cursor-pointer hover:bg-[#a59999] justify-center text-center bg-[#828181] rounded-2xl" onClick={() => {onOpen(), setContent("pending")}}>Pending</div>
                 </Flex>
                 <Text fontSize={20} mt={4} fontWeight="medium">Assets</Text>
-                <Flex width="100%" p={4} mt={2} justifyContent="center" alignItems="center" className="bg-nft-black-1 rounded-2xl">
-                    <Flex width="70%" justifyContent="space-between">
+                <Flex width="100%" p={4} mt={2} justifyContent="center" alignItems="center" className="bg-[#273B4A] rounded-2xl">
+                    <Flex width="70%" color="white" justifyContent="space-between">
                         <div className="">Tokens</div>
                         <div>NFTs</div>
                     </Flex>
@@ -180,10 +179,10 @@ const SafeDetails = () => {
                      <Text>20 Uniswap</Text>
                      <Text>145 USD</Text>
                 </Flex>
-                <div className="bg-nft-black-1 mb-4 border border-nft-black-1 rounded-lg w-full outline-none font-poppins dark:text-white text-nft-gray-2 text-base mt-4 px-4 py-3 flexBetween flex-row">
+                <div className="bg-[#273B4A] mb-4 border border-[#273B4A] rounded-lg w-full outline-none font-poppins dark:text-white text-nft-gray-2 text-base mt-4 px-4 py-3 flexBetween flex-row">
                     <input
                         type="number"
-                        className="flex-1 w-full bg-nft-black-1 outline-none "
+                        className="flex-1 w-full bg-[#273B4A] outline-none "
                         placeholder="Deposit to safe"
                         onChange={(e) => setEthAmount(e.target.value)}
                         value={ethAmount}
@@ -239,7 +238,7 @@ const SafeDetails = () => {
             </>
         ) : (
           <Box width="100%" justifyContent="center" justifyItems="center" alignContent='center' alignItems="center" className="w-full justify-center items-center text-center align-middle">
-            <Image src="/images/wait.png" height={1000} width={500} alt="wait" />
+             <Text>Fetching Safe...</Text>
           </Box>
         )}
         </Box>

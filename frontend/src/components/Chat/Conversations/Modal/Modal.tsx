@@ -1,6 +1,7 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   Button,
+  Flex,
   Input,
   Modal,
   ModalBody,
@@ -45,6 +46,7 @@ const ConversationModal: React.FC<ModalProps> = ({
   const router = useRouter();
 
   const [username, setUsername] = useState("");
+  const [checkValue, setCheckValue] = useState<any>(false);
   const [participants, setParticipants] = useState<Array<SearchedUser>>([]);
   const { userInfo, privateKey, currentAccount, userId } = useContext(AuthContext);
   const [searchUsers, { data, error, loading }] = useLazyQuery<
@@ -58,11 +60,12 @@ const ConversationModal: React.FC<ModalProps> = ({
 
   const onCreateConversation = async () => {
     const participantIds = [userId, ...participants.map((p) => p.id)];
-    const conversationAddress = "0x00024FA2CBaF665aFaF272712261d600ef8AC1c4";
+    const conversationAddress = "0x0000000000000000000000000000000000000000";
     const participantAddresses = [currentAccount, ...participants.map((p) => p.walletAddress)];
      
     try {
-      /*const RPC_URL='https://eth-goerli.public.blastapi.io'
+      if(checkValue){
+        const RPC_URL='https://eth-goerli.public.blastapi.io'
       const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
 
       // Initialize signers
@@ -84,17 +87,14 @@ const ConversationModal: React.FC<ModalProps> = ({
 
       /* This Safe is tied to owner 1 because the factory was initialized with
       an adapter that had owner 1 as the signer. */
-      /*const safeSdkOwner = await safeFactory.deploySafe({ safeAccountConfig })
+      const safeSdkOwner = await safeFactory.deploySafe({ safeAccountConfig })
 
       const safeAddress = safeSdkOwner.getAddress()
-
-      console.log(safeAddress);*/
-
 
       const { data } = await createConversation({
         variables: {
           participantIds,
-          conversationAddress,
+          safeAddress,
           userId
         },
       });
@@ -109,6 +109,26 @@ const ConversationModal: React.FC<ModalProps> = ({
 
       router.push({ query: { conversationId } });
 
+      }else{
+        const { data } = await createConversation({
+          variables: {
+            participantIds,
+            conversationAddress,
+            userId
+          },
+        });
+  
+        if (!data?.createConversation) {
+          throw new Error("Failed to create conversation");
+        }
+  
+        const {
+          createConversation: { conversationId },
+        } = data;
+  
+        router.push({ query: { conversationId } });
+      }
+       
       /**
        * Clear state and close modal
        * on successful creation
@@ -116,6 +136,7 @@ const ConversationModal: React.FC<ModalProps> = ({
       setParticipants([]);
       setUsername("");
       onClose();
+      setCheckValue(false)
     } catch (error: any) {
       console.log("onCreateConversation error", error);
       toast.error(error?.message);
@@ -141,8 +162,8 @@ const ConversationModal: React.FC<ModalProps> = ({
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent bg="#2d2d2d" pb={4}>
-          <ModalHeader>Create a Conversation</ModalHeader>
+        <ModalContent bg="#273B4A" color="#fff" pb={4}>
+          <ModalHeader color="#fff">Create a Conversation</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={onSearch}>
@@ -152,7 +173,7 @@ const ConversationModal: React.FC<ModalProps> = ({
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                 />
-                <Button type="submit" disabled={!username} isLoading={loading}>
+                <Button bg="#436475" type="submit" disabled={!username} isLoading={loading}>
                   Search
                 </Button>
               </Stack>
@@ -170,6 +191,10 @@ const ConversationModal: React.FC<ModalProps> = ({
                   participants={participants}
                   removeParticipant={removeParticipant}
                 />
+                 <Flex mt={4}>
+                 <input  type="checkbox" onChange={(e) => setCheckValue(e.target.checked)} />
+                 <Text ml={2}>Create a safe</Text>
+                 </Flex>
                 <Button
                   bg="brand.100"
                   width="100%"

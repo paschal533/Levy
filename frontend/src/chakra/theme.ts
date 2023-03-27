@@ -12,11 +12,12 @@ export const theme = extendTheme(
       brand: {
         100: "#3d84f7",
       },
+      color: "white",
     },
     styles: {
       global: () => ({
         body: {
-          bg: "whiteAlpha.100",
+          bg: "#436475",
         },
       }),
     },

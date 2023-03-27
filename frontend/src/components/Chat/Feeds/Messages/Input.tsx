@@ -103,7 +103,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           _focus={{
             boxShadow: "none",
             border: "1px solid",
-            borderColor: "whiteAlpha.300",
+            borderColor: "white",
           }}
         />
       </form>

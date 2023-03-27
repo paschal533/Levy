@@ -27,6 +27,7 @@ export default function Home() {
     document.dispatchEvent(event);
 
   };
+
   useEffect(() => {
     if(privateKey){
      create()
@@ -64,7 +65,7 @@ export default function Home() {
  };
    
   return (
-    <Box>
+    <Box color="white">
       {pass ? (
         <Flex>
         <Sidebar />

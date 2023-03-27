@@ -77,7 +77,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
         cursor="pointer"
         onClick={onOpen}
       >
-        <Text textAlign="center" color="whiteAlpha.800" fontWeight={500}>
+        <Text textAlign="center"  fontWeight={500}>
           Find or start a conversation
         </Text>
       </Box>
@@ -107,7 +107,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
           );
         })}
         <Box position="absolute" bottom={0} left={0} width="100%" px={8}>
-        <Button width="100%" onClick={() => signOut()}>
+        <Button bg="#273B4A" width="100%" onClick={() => signOut()}>
           Logout
         </Button>
       </Box>
