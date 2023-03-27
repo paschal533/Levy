@@ -13,7 +13,20 @@ import Loader from "./Loader";
 import images from "../../../assets";
 import { Box } from "@chakra-ui/react";
 
-const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+const projectId = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID;
+const projectSecret = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_SECRET;
+const projectIdAndSecret = `${projectId}:${projectSecret}`;
+
+const client = ipfsHttpClient({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+  headers: {
+    authorization: `Basic ${Buffer.from(projectIdAndSecret).toString(
+      "base64"
+    )}`,
+  },
+});
 
 const CreateItem = () => {
   const { provider, login } = useContext(AuthContext);
@@ -26,7 +39,7 @@ const CreateItem = () => {
     try {
       const added = await client.add({ content: file });
 
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://levy.infura-ipfs.io/ipfs/${added.path}`;
 
       setFileUrl(url);
     } catch (error) {
@@ -74,7 +87,7 @@ const CreateItem = () => {
     const data = JSON.stringify({ name, description, image: fileUrl });
     try {
       const added = await client.add(data);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://levy.infura-ipfs.io/ipfs/${added.path}`;
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
       await createSale(url, formInput.price);
       router.push("/nft-store");
