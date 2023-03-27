@@ -1,4 +1,4 @@
-// @ts-nocheck 
+// @ts-nocheck
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import Web3 from "web3";
 

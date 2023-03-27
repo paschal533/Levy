@@ -1,5 +1,5 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import { AuthProvider } from "@/context/AuthContext";
 import { FetchProvider } from "@/context/FetchContext";
@@ -13,13 +13,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-      <FetchProvider>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-        <Toaster />
-      </ChakraProvider>
-      </FetchProvider>
+        <FetchProvider>
+          <ChakraProvider theme={theme}>
+            <Component {...pageProps} />
+            <Toaster />
+          </ChakraProvider>
+        </FetchProvider>
       </AuthProvider>
     </ApolloProvider>
-  )
+  );
 }

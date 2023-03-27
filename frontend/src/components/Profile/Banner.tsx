@@ -1,4 +1,3 @@
-
 const Banner = ({ name, childStyles, parentStyle, show }: any) => (
   <div
     className={`relative w-full flex items-center z-0 overflow-hidden nft-gradient ${parentStyle}`}

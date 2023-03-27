@@ -1,4 +1,4 @@
-//@ts-nocheck 
+//@ts-nocheck
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   Button,
@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import UserOperations from "../../../../graphql/operations/user";
 import ConversationOperations from "../../../../graphql/operations/conversation";
-import { useContext } from 'react';
+import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import {
   CreateConversationData,
@@ -29,27 +29,25 @@ import {
 import Participants from "./Participants";
 import UserSearchList from "./UserSearchList";
 import { useRouter } from "next/router";
-import { ethers } from 'ethers'
-import EthersAdapter from '@safe-global/safe-ethers-lib'
-import SafeServiceClient from '@safe-global/safe-service-client'
-import { SafeAccountConfig } from '@safe-global/safe-core-sdk'
-import { SafeFactory } from '@safe-global/safe-core-sdk'
+import { ethers } from "ethers";
+import EthersAdapter from "@safe-global/safe-ethers-lib";
+import SafeServiceClient from "@safe-global/safe-service-client";
+import { SafeAccountConfig } from "@safe-global/safe-core-sdk";
+import { SafeFactory } from "@safe-global/safe-core-sdk";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ConversationModal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+const ConversationModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [checkValue, setCheckValue] = useState<any>(false);
   const [participants, setParticipants] = useState<Array<SearchedUser>>([]);
-  const { userInfo, privateKey, currentAccount, userId } = useContext(AuthContext);
+  const { userInfo, privateKey, currentAccount, userId } =
+    useContext(AuthContext);
   const [searchUsers, { data, error, loading }] = useLazyQuery<
     SearchUsersData,
     SearchUsersInput
@@ -62,74 +60,80 @@ const ConversationModal: React.FC<ModalProps> = ({
   const onCreateConversation = async () => {
     const participantIds = [userId, ...participants.map((p) => p.id)];
     const conversationAddress = "0x0000000000000000000000000000000000000000";
-    const participantAddresses = [currentAccount, ...participants.map((p) => p.walletAddress)];
-     
+    const participantAddresses = [
+      currentAccount,
+      ...participants.map((p) => p.walletAddress),
+    ];
+
     try {
-      if(checkValue){
-        const RPC_URL='https://eth-goerli.public.blastapi.io'
-      const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
+      if (checkValue) {
+        const RPC_URL = "https://eth-goerli.public.blastapi.io";
+        const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
 
-      // Initialize signers
-      const signer = new ethers.Wallet(privateKey, provider)
+        // Initialize signers
+        const signer = new ethers.Wallet(privateKey, provider);
 
-      const ethAdapterOwner = new EthersAdapter({
-        ethers,
-        signerOrProvider: signer
-      })
+        const ethAdapterOwner = new EthersAdapter({
+          ethers,
+          signerOrProvider: signer,
+        });
 
-      const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
-      const safeFactory = await SafeFactory.create({ ethAdapter: ethAdapterOwner })
+        const txServiceUrl = "https://safe-transaction-goerli.safe.global";
+        const safeFactory = await SafeFactory.create({
+          ethAdapter: ethAdapterOwner,
+        });
 
-      const safeAccountConfig: SafeAccountConfig = {
-        owners: participantAddresses,
-        threshold: participantAddresses.length,
-        // ... (Optional params)
-      }
+        const safeAccountConfig: SafeAccountConfig = {
+          owners: participantAddresses,
+          threshold: participantAddresses.length,
+          // ... (Optional params)
+        };
 
-      /* This Safe is tied to owner 1 because the factory was initialized with
+        /* This Safe is tied to owner 1 because the factory was initialized with
       an adapter that had owner 1 as the signer. */
-      const safeSdkOwner = await safeFactory.deploySafe({ safeAccountConfig })
+        const safeSdkOwner = await safeFactory.deploySafe({
+          safeAccountConfig,
+        });
 
-      const safeAddress = safeSdkOwner.getAddress()
+        const safeAddress = safeSdkOwner.getAddress();
 
-      const { data } = await createConversation({
-        variables: {
-          participantIds,
-          safeAddress,
-          userId
-        },
-      });
+        const { data } = await createConversation({
+          variables: {
+            participantIds,
+            safeAddress,
+            userId,
+          },
+        });
 
-      if (!data?.createConversation) {
-        throw new Error("Failed to create conversation");
-      }
+        if (!data?.createConversation) {
+          throw new Error("Failed to create conversation");
+        }
 
-      const {
-        createConversation: { conversationId },
-      } = data;
+        const {
+          createConversation: { conversationId },
+        } = data;
 
-      router.push({ query: { conversationId } });
-
-      }else{
+        router.push({ query: { conversationId } });
+      } else {
         const { data } = await createConversation({
           variables: {
             participantIds,
             conversationAddress,
-            userId
+            userId,
           },
         });
-  
+
         if (!data?.createConversation) {
           throw new Error("Failed to create conversation");
         }
-  
+
         const {
           createConversation: { conversationId },
         } = data;
-  
+
         router.push({ query: { conversationId } });
       }
-       
+
       /**
        * Clear state and close modal
        * on successful creation
@@ -137,7 +141,7 @@ const ConversationModal: React.FC<ModalProps> = ({
       setParticipants([]);
       setUsername("");
       onClose();
-      setCheckValue(false)
+      setCheckValue(false);
     } catch (error: any) {
       console.log("onCreateConversation error", error);
       toast.error(error?.message);
@@ -174,7 +178,12 @@ const ConversationModal: React.FC<ModalProps> = ({
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                 />
-                <Button bg="#436475" type="submit" disabled={!username} isLoading={loading}>
+                <Button
+                  bg="#436475"
+                  type="submit"
+                  disabled={!username}
+                  isLoading={loading}
+                >
                   Search
                 </Button>
               </Stack>
@@ -192,10 +201,13 @@ const ConversationModal: React.FC<ModalProps> = ({
                   participants={participants}
                   removeParticipant={removeParticipant}
                 />
-                 <Flex mt={4}>
-                 <input  type="checkbox" onChange={(e) => setCheckValue(e.target.checked)} />
-                 <Text ml={2}>Create a safe</Text>
-                 </Flex>
+                <Flex mt={4}>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => setCheckValue(e.target.checked)}
+                  />
+                  <Text ml={2}>Create a safe</Text>
+                </Flex>
                 <Button
                   bg="brand.100"
                   width="100%"

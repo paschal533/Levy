@@ -1,4 +1,4 @@
-//@ts-nocheck 
+//@ts-nocheck
 import { useState, useMemo, useCallback, useContext } from "react";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { useRouter } from "next/router";
@@ -7,9 +7,9 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { AuthContext } from "@/context/AuthContext";
 
-import { FetchContext } from '../../context/FetchContext';
-import NFTButton from "./NFTButton"
-import NFTInput from "./NFTInput"
+import { FetchContext } from "../../context/FetchContext";
+import NFTButton from "./NFTButton";
+import NFTInput from "./NFTInput";
 import Loader from "./Loader";
 import images from "../../../assets";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -31,11 +31,11 @@ const client = ipfsHttpClient({
 
 const CreateItem = () => {
   const { provider, login } = useContext(AuthContext);
-  const { createSale, isLoadingNFT } = useContext(FetchContext)
+  const { createSale, isLoadingNFT } = useContext(FetchContext);
   const [fileUrl, setFileUrl] = useState<string>("");
   const { theme } = useTheme();
 
-  const uploadToInfura = async (file : any) => {
+  const uploadToInfura = async (file: any) => {
     try {
       const added = await client.add({ content: file });
 
@@ -47,7 +47,7 @@ const CreateItem = () => {
     }
   };
 
-  const onDrop = useCallback(async (acceptedFile : any) => {
+  const onDrop = useCallback(async (acceptedFile: any) => {
     await uploadToInfura(acceptedFile[0]);
   }, []);
 
@@ -90,117 +90,123 @@ const CreateItem = () => {
       const url = `https://levy.infura-ipfs.io/ipfs/${added.path}`;
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
       await createSale(url, formInput.price);
-      router.push('/')
+      router.push("/");
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
   };
 
-
   if (isLoadingNFT) {
     return (
-      <div className="flexCenter justify-center text-center w-full" style={{ height: "51vh" }}>
+      <div
+        className="flexCenter justify-center text-center w-full"
+        style={{ height: "51vh" }}
+      >
         <Flex flexDirection="column">
-        <Loader />
-        <Text>Creating your NFT...</Text>
+          <Loader />
+          <Text>Creating your NFT...</Text>
         </Flex>
       </div>
     );
   }
 
   return (
-      <Box   overflowY="scroll"  height="100vh" className="flex w-full align-middle items-center justify-center">
-        <Box  height="100%" className=" pt-6 pb-6 mb-8 w-[700px] ">
-          <h1 className="font-poppins text-white font-semibold text-2xl">
-            Create new item
-          </h1>
+    <Box
+      overflowY="scroll"
+      height="100vh"
+      className="flex w-full align-middle items-center justify-center"
+    >
+      <Box height="100%" className=" pt-6 pb-6 mb-8 w-[700px] ">
+        <h1 className="font-poppins text-white font-semibold text-2xl">
+          Create new item
+        </h1>
 
-          <div className="mt-16">
-            <p className="font-poppins text-white font-semibold text-xl">
-              Upload file
-            </p>
-            <div className="mt-4 ">
-              <div {...getRootProps()} className={fileStyle}>
-                <input {...getInputProps()} />
-                <div className="flexCenter flex-col text-center">
-                  <p className="font-poppins text-white font-semibold text-xl">
-                    JPG, PNG, GIF, SVG, WEBM, MP3, MP4. Max 100mb.
-                  </p>
+        <div className="mt-16">
+          <p className="font-poppins text-white font-semibold text-xl">
+            Upload file
+          </p>
+          <div className="mt-4 ">
+            <div {...getRootProps()} className={fileStyle}>
+              <input {...getInputProps()} />
+              <div className="flexCenter flex-col text-center">
+                <p className="font-poppins text-white font-semibold text-xl">
+                  JPG, PNG, GIF, SVG, WEBM, MP3, MP4. Max 100mb.
+                </p>
 
-                  <div className="my-12 w-full flex justify-center">
-                    <Image
-                      src={images.upload}
-                      width={100}
-                      height={100}
-                      objectFit="contain"
-                      alt="file upload"
-                    />
-                  </div>
-
-                  <p className="font-poppins text-white  font-semibold text-sm">
-                    Drag and Drop File
-                  </p>
-                  <p className="font-poppins text-white  font-semibold text-sm mt-2">
-                    Or browse media on your device
-                  </p>
+                <div className="my-12 w-full flex justify-center">
+                  <Image
+                    src={images.upload}
+                    width={100}
+                    height={100}
+                    objectFit="contain"
+                    alt="file upload"
+                  />
                 </div>
+
+                <p className="font-poppins text-white  font-semibold text-sm">
+                  Drag and Drop File
+                </p>
+                <p className="font-poppins text-white  font-semibold text-sm mt-2">
+                  Or browse media on your device
+                </p>
               </div>
-              {fileUrl && (
-                <aside>
-                  <div>
-                    <img src={fileUrl} alt="Asset_file" />
-                  </div>
-                </aside>
-              )}
             </div>
-          </div>
-
-          <NFTInput
-            inputType="input"
-            title="Name"
-            placeholder="Asset Name"
-            handleClick={(e : any) =>
-              updateFormInput({ ...formInput, name: e.target.value })
-            }
-          />
-
-          <NFTInput
-            inputType="textarea"
-            title="Description"
-            placeholder="Asset Description"
-            handleClick={(e : any) =>
-              updateFormInput({ ...formInput, description: e.target.value })
-            }
-          />
-
-          <NFTInput
-            inputType="number"
-            title="Price"
-            placeholder="Asset Price"
-            handleClick={(e : any) =>
-              updateFormInput({ ...formInput, price: e.target.value })
-            }
-          />
-
-          <div className="mt-7 w-full flex justify-end">
-            {provider ? (
-              <NFTButton
-                btnName="Create Item"
-                btnType="primary"
-                classStyles="rounded-xl"
-                handleClick={createMarket}
-              />
-            ) : (
-              <NFTButton
-                btnName="Login"
-                btnType="primary"
-                classStyles="rounded-xl"
-                handleClick={login}
-              />
+            {fileUrl && (
+              <aside>
+                <div>
+                  <img src={fileUrl} alt="Asset_file" />
+                </div>
+              </aside>
             )}
           </div>
-        </Box>
+        </div>
+
+        <NFTInput
+          inputType="input"
+          title="Name"
+          placeholder="Asset Name"
+          handleClick={(e: any) =>
+            updateFormInput({ ...formInput, name: e.target.value })
+          }
+        />
+
+        <NFTInput
+          inputType="textarea"
+          title="Description"
+          placeholder="Asset Description"
+          handleClick={(e: any) =>
+            updateFormInput({ ...formInput, description: e.target.value })
+          }
+        />
+
+        <NFTInput
+          inputType="number"
+          title="Price"
+          placeholder="Asset Price"
+          handleClick={(e: any) =>
+            updateFormInput({ ...formInput, price: e.target.value })
+          }
+        />
+
+        <div className="mt-7 w-full flex justify-end">
+          {provider ? (
+            <NFTButton
+              btnName="Create Item"
+              btnType="primary"
+              classStyles="rounded-xl"
+              handleClick={createMarket}
+            />
+          ) : (
+            <NFTButton
+              btnName="Login"
+              btnType="primary"
+              classStyles="rounded-xl"
+              handleClick={login}
+            />
+          )}
+        </div>
       </Box>
+    </Box>
   );
 };
 

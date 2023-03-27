@@ -1,5 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache, split } from "@apollo/client";
-import { setContext } from '@apollo/client/link/context';
+import { setContext } from "@apollo/client/link/context";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
@@ -29,8 +29,8 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? token : "",
-    }
-  }
+    },
+  };
 });
 
 const link =
@@ -49,6 +49,6 @@ const link =
     : httpLink;
 
 export const client = new ApolloClient({
-  link : authLink.concat(link),
+  link: authLink.concat(link),
   cache: new InMemoryCache(),
 });

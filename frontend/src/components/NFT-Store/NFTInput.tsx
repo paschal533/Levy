@@ -1,8 +1,4 @@
-
- 
-
-const Input = ({ inputType, title, placeholder, handleClick } : any) => {
-   
+const Input = ({ inputType, title, placeholder, handleClick }: any) => {
   const nftCurrency = "xDAI";
 
   return (

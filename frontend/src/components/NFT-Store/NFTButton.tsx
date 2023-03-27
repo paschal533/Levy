@@ -3,7 +3,7 @@ const primaryBtn =
 const outlineBtn =
   "border border-[#2d89e6] bg-transparent font-poppins font-semibold text-sm minlg:text-lg py-2 px-6 minlg:py-4 minlg:px-8";
 
-const Button = ({ btnName, classStyles, btnType, handleClick } : any) => (
+const Button = ({ btnName, classStyles, btnType, handleClick }: any) => (
   <button
     type="button"
     className={

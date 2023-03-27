@@ -3,10 +3,7 @@ import { gql } from "@apollo/client";
 export default {
   Queries: {
     searchUsers: gql`
-      query SearchUsers(
-        $username: String! 
-        $caller: String!
-      ) {
+      query SearchUsers($username: String!, $caller: String!) {
         searchUsers(username: $username, caller: $caller) {
           id
           username
@@ -16,9 +13,7 @@ export default {
       }
     `,
     searchUser: gql`
-      query SearchUser(
-        $walletAddress: String! 
-      ) {
+      query SearchUser($walletAddress: String!) {
         searchUser(walletAddress: $walletAddress) {
           id
           username

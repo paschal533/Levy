@@ -28,7 +28,20 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, sentByMe }) => {
     >
       {!sentByMe && (
         <Flex align="flex-end">
-          {!message.sender.image ? <Avatar size="sm" />: <Image src={message.sender.image || "https://i.ibb.co/cQ5vw69/Lazy-Lion-NFT-1005x1024.png"} alt="profile" className="rounded" height={40} width={40} /> }
+          {!message.sender.image ? (
+            <Avatar size="sm" />
+          ) : (
+            <Image
+              src={
+                message.sender.image ||
+                "https://i.ibb.co/cQ5vw69/Lazy-Lion-NFT-1005x1024.png"
+              }
+              alt="profile"
+              className="rounded"
+              height={40}
+              width={40}
+            />
+          )}
         </Flex>
       )}
       <Stack spacing={1} width="100%">

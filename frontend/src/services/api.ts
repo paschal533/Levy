@@ -12,7 +12,7 @@ export const getTopTenCoins = async () => {
     const res = await fetch("/api/getTopTen");
     const data = await res.json();
     return data.data.data;
-  } catch (e : any) {
+  } catch (e: any) {
     console.log(e.message);
   }
 };

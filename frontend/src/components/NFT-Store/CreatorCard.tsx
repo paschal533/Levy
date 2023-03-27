@@ -1,10 +1,8 @@
-
 import Image from "next/image";
 
 import images from "../../../assets";
 
-const CreatorCard = ({ rank, creatorImage, creatorName, creatorEths } : any) => {
-
+const CreatorCard = ({ rank, creatorImage, creatorName, creatorEths }: any) => {
   return (
     <div className="bg-[#2A2D3A] border border-[#2A2D3A] rounded-3xl flex flex-col p-4 m-4">
       <div className="w-10 h-10 minlg:w-10 minlg:h-10 rounded-full bg-[#2d89e6] flexCenter">

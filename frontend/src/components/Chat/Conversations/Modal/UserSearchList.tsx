@@ -33,7 +33,13 @@ const UserSearchList: React.FC<UserSearchListProps> = ({
               _hover={{ bg: "whiteAlpha.200" }}
             >
               <div className="rounded">
-                <Image className="rounded" src={user.image} width={50} height={50} alt="profile" />
+                <Image
+                  className="rounded"
+                  src={user.image}
+                  width={50}
+                  height={50}
+                  alt="profile"
+                />
               </div>
               <Flex justify="space-between" align="center" width="100%">
                 <Text color="whiteAlpha.700">{user.username}</Text>

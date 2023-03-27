@@ -61,7 +61,6 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
     }
   };
 
-
   return (
     <Stack
       direction="row"
@@ -128,7 +127,20 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
           <GoPrimitiveDot fontSize={18} color="#6B46C1" />
         )}
       </Flex>
-      {conversation.participants.length > 2 ? <Avatar />: <Image src={formatUserImage(conversation.participants, userId) || "https://i.ibb.co/cQ5vw69/Lazy-Lion-NFT-1005x1024.png"} alt="profile" className="rounded" height={40} width={40} /> }
+      {conversation.participants.length > 2 ? (
+        <Avatar />
+      ) : (
+        <Image
+          src={
+            formatUserImage(conversation.participants, userId) ||
+            "https://i.ibb.co/cQ5vw69/Lazy-Lion-NFT-1005x1024.png"
+          }
+          alt="profile"
+          className="rounded"
+          height={40}
+          width={40}
+        />
+      )}
       <Flex justify="space-between" width="80%" height="100%">
         <Flex direction="column" width="70%" height="100%">
           <Text
@@ -152,11 +164,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
             </Box>
           )}
         </Flex>
-        <Text
-          textAlign="right"
-          position="absolute"
-          right={4}
-        >
+        <Text textAlign="right" position="absolute" right={4}>
           {formatRelative(new Date(conversation.updatedAt), new Date(), {
             locale: {
               ...enUS,

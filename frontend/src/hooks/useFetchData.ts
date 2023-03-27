@@ -12,12 +12,11 @@ export const useFetchData = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [nfts, setNfts] = useState<any>([]);
   const [nftsCopy, setNftsCopy] = useState([]);
-  const xDai = "xDai"
+  const xDai = "xDai";
 
-  const { privateKey , currentAccount} = useContext(AuthContext)
+  const { privateKey, currentAccount } = useContext(AuthContext);
   const fetchNFTs = async () => {
     try {
-
       const provider = new ethers.providers.JsonRpcProvider(
         "https://rpc.chiadochain.net"
       );
@@ -27,7 +26,7 @@ export const useFetchData = () => {
 
       const items = await Promise.all(
         data.map(
-          async ({ tokenId, seller, owner, price: unformattedPrice } : any) => {
+          async ({ tokenId, seller, owner, price: unformattedPrice }: any) => {
             const tokenURI = await contract.tokenURI(tokenId);
             const {
               data: { image, name, description },
@@ -59,24 +58,23 @@ export const useFetchData = () => {
   };
 
   const get = () => {
-    fetchNFTs()
-    .then((items : any) => {
+    fetchNFTs().then((items: any) => {
       setNfts(items.reverse());
       setNftsCopy(items);
       setIsLoading(false);
     });
-  }
+  };
 
   useEffect(() => {
-    get()
-  }, [])
+    get();
+  }, []);
 
-  const fetchMyNFTsOrCreatedNFTs = async (type : string) => {
+  const fetchMyNFTsOrCreatedNFTs = async (type: string) => {
     setIsLoadingNFT(false);
 
-    const RPC_URL='https://rpc.chiadochain.net'
-    const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
-    const signer = new ethers.Wallet(privateKey, provider)
+    const RPC_URL = "https://rpc.chiadochain.net";
+    const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+    const signer = new ethers.Wallet(privateKey, provider);
 
     const contract = API.fetchContract(signer);
     const data =
@@ -85,38 +83,45 @@ export const useFetchData = () => {
         : await contract.fetchMyNFTs();
 
     const items = await Promise.all(
-      data.map(async ({ tokenId, seller, owner, price: unformattedPrice }: any) => {
-        const tokenURI = await contract.tokenURI(tokenId);
-        const {
-          data: { image, name, description },
-        } = await axios.get(tokenURI);
-        const price = ethers.utils.formatUnits(
-          unformattedPrice.toString(),
-          "ether"
-        );
+      data.map(
+        async ({ tokenId, seller, owner, price: unformattedPrice }: any) => {
+          const tokenURI = await contract.tokenURI(tokenId);
+          const {
+            data: { image, name, description },
+          } = await axios.get(tokenURI);
+          const price = ethers.utils.formatUnits(
+            unformattedPrice.toString(),
+            "ether"
+          );
 
-        return {
-          price,
-          tokenId: tokenId.toNumber(),
-          seller,
-          owner,
-          image,
-          name,
-          description,
-          tokenURI,
-        };
-      })
+          return {
+            price,
+            tokenId: tokenId.toNumber(),
+            seller,
+            owner,
+            image,
+            name,
+            description,
+            tokenURI,
+          };
+        }
+      )
     );
 
     return items;
   };
 
-  const createSale = async (url : string, formInputPrice : any, isReselling : any, id : any) => {
-    setIsLoadingNFT(true)
+  const createSale = async (
+    url: string,
+    formInputPrice: any,
+    isReselling: any,
+    id: any
+  ) => {
+    setIsLoadingNFT(true);
 
-    const RPC_URL='https://rpc.chiadochain.net'
-    const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
-    const signer = new ethers.Wallet(privateKey, provider)
+    const RPC_URL = "https://rpc.chiadochain.net";
+    const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+    const signer = new ethers.Wallet(privateKey, provider);
 
     const price = ethers.utils.parseUnits(formInputPrice, "ether");
     const contract = API.fetchContract(signer);
@@ -130,16 +135,16 @@ export const useFetchData = () => {
           value: listingPrice.toString(),
         });
     await transaction.wait();
-    get()
-    setIsLoadingNFT(false)
+    get();
+    setIsLoadingNFT(false);
   };
 
   const buyNft = async (nft: any) => {
     try {
-      setIsBuyNFT(true)
-      const RPC_URL='https://rpc.chiadochain.net'
-      const provider = new ethers.providers.JsonRpcProvider(RPC_URL)
-      const signer = new ethers.Wallet(privateKey, provider)
+      setIsBuyNFT(true);
+      const RPC_URL = "https://rpc.chiadochain.net";
+      const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+      const signer = new ethers.Wallet(privateKey, provider);
       const contract = API.fetchContract(signer);
 
       const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
@@ -147,7 +152,7 @@ export const useFetchData = () => {
         value: price,
       });
       await transaction.wait();
-      setIsBuyNFT(false)
+      setIsBuyNFT(false);
     } catch (error) {
       alert(
         "You do not have sufficient money on your wallet to purchase this NFT. "
@@ -169,6 +174,6 @@ export const useFetchData = () => {
     nftsCopy,
     isLoading,
     setNfts,
-    setNftsCopy
+    setNftsCopy,
   };
 };

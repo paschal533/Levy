@@ -1,4 +1,4 @@
-//@ts-nocheck 
+//@ts-nocheck
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -6,14 +6,14 @@ import { Box } from "@chakra-ui/react";
 
 import { FetchContext } from "../../context/FetchContext";
 import { shortenAddress } from "../../util/shortenAddress";
-import NFTButton from "./NFTButton"
+import NFTButton from "./NFTButton";
 import Loader from "./Loader";
-import NFTModal from "./NFTModal"
+import NFTModal from "./NFTModal";
 import { AuthContext } from "@/context/AuthContext";
 
 import images from "../../../assets";
 
-const PaymentBodyCmp = ({ nft, nftCurrency } : any) => (
+const PaymentBodyCmp = ({ nft, nftCurrency }: any) => (
   <div className="flex flex-col">
     <div className="flexBetween">
       <p className="font-poppins text-white  font-semibold text-base minlg:text-xl">
@@ -109,7 +109,11 @@ const AssetDetails = () => {
 
   return (
     <>
-      <Box overflowY="scroll" height="100vh" className="relative flex justify-center min-h-screen">
+      <Box
+        overflowY="scroll"
+        height="100vh"
+        className="relative flex justify-center min-h-screen"
+      >
         <div className="max-w-[1200px] flex relative">
           <div className="relative flex-1 p-12 border-r border-nft-black-1 ">
             <div className="relative w-557 minmd:w-2/3 minmd:h-2/3 sm:w-full  h-557 ">

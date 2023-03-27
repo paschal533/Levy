@@ -35,7 +35,11 @@ export default {
         $conversationAddress: String!
         $userId: String!
       ) {
-        createConversation(participantIds: $participantIds, conversationAddress: $conversationAddress, userId: $userId) {
+        createConversation(
+          participantIds: $participantIds
+          conversationAddress: $conversationAddress
+          userId: $userId
+        ) {
           conversationId
         }
       }

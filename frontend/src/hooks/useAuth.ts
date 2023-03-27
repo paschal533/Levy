@@ -1,4 +1,4 @@
-// @ts-nocheck 
+// @ts-nocheck
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { Web3Auth } from "@web3auth/modal";
@@ -42,26 +42,25 @@ const useAuth = () => {
   useEffect(() => {
     const init = async () => {
       try {
-
         const API = process.env.NEXT_PUBLIC_GELATO_API_KEY;
         const gaslessWalletConfig: GaslessWalletConfig = { API };
-          const loginConfig: LoginConfig = {
-            domains: [window.location.origin],
-            chain: {
-              id: 5,
-              rpcUrl: "https://rpc.ankr.com/eth_goerli",
-            }
-          };
-          const gaslessOnboarding = new GaslessOnboarding(
-            loginConfig,
-            gaslessWalletConfig
-          );
+        const loginConfig: LoginConfig = {
+          domains: [window.location.origin],
+          chain: {
+            id: 5,
+            rpcUrl: "https://rpc.ankr.com/eth_goerli",
+          },
+        };
+        const gaslessOnboarding = new GaslessOnboarding(
+          loginConfig,
+          gaslessWalletConfig
+        );
 
-          setGaslessOnboarding(gaslessOnboarding)
-          await gaslessOnboarding.init();
-          const provider = gaslessOnboarding.getProvider();
-          if(!provider) return;
-         
+        setGaslessOnboarding(gaslessOnboarding);
+        await gaslessOnboarding.init();
+        const provider = gaslessOnboarding.getProvider();
+        if (!provider) return;
+
         if (provider) {
           setProvider(provider);
         }
@@ -92,7 +91,7 @@ const useAuth = () => {
     }
     await gaslessOnboarding.login();
     const provider = gaslessOnboarding.getProvider();
-    console.log(provider)
+    console.log(provider);
     setProvider(provider);
   };
 
@@ -112,7 +111,6 @@ const useAuth = () => {
     setProvider(null);
   };
 
-
   const getAccounts = async () => {
     if (!provider) {
       return;
@@ -131,7 +129,6 @@ const useAuth = () => {
     setBalance(balance);
   };
 
-
   const getPrivateKey = async () => {
     if (!provider) {
       return;
@@ -144,16 +141,16 @@ const useAuth = () => {
   const router = useRouter();
 
   const signOut = async () => {
-    await logout()
-    await router.push('/')
-    await localStorage.setItem("userId", "")
-    await setUserInfo({})
-    await setCurrentAccount("")
-    await setPrivatekey("")
-    await setProvider(null)
-    await setPass(false)
-    await window.location.reload(false)
-  }
+    await logout();
+    await router.push("/");
+    await localStorage.setItem("userId", "");
+    await setUserInfo({});
+    await setCurrentAccount("");
+    await setPrivatekey("");
+    await setProvider(null);
+    await setPass(false);
+    await window.location.reload(false);
+  };
 
   return {
     signOut,
@@ -169,7 +166,7 @@ const useAuth = () => {
     setUserId,
     setConversationAddress,
     userId,
-    conversactionAddress
+    conversactionAddress,
   };
 };
 

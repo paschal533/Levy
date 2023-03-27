@@ -1,4 +1,4 @@
-export const makeid = (length : number) => {
+export const makeid = (length: number) => {
   let result = "";
 
   const characters =

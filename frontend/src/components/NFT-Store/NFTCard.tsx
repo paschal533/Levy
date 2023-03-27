@@ -1,4 +1,4 @@
-//@ts-nocheck 
+//@ts-nocheck
 import { useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -7,11 +7,11 @@ import Link from "next/link";
 import images from "../../../assets";
 import { shortenAddress } from "../../util/shortenAddress";
 
-const NFTCard = ({ nft, onProfilePage } : any) => { 
+const NFTCard = ({ nft, onProfilePage }: any) => {
   const router = useRouter();
-  const onClick = (nft : any) => {
+  const onClick = (nft: any) => {
     router.push({ query: nft });
-  }
+  };
 
   return (
     <div onClick={() => onClick(nft)}>

@@ -1,4 +1,4 @@
-//@ts-nocheck 
+//@ts-nocheck
 import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { BiMessageSquareDots } from "react-icons/bi";
@@ -23,11 +23,11 @@ const NoConversation: React.FC = () => {
 
   return (
     <Flex height="100%" justify="center" align="center">
-    <Stack spacing={10} align="center">
-      <Text fontSize={40}>{text}</Text>
-      <BiMessageSquareDots fontSize={90} />
-    </Stack>
-  </Flex>
+      <Stack spacing={10} align="center">
+        <Text fontSize={40}>{text}</Text>
+        <BiMessageSquareDots fontSize={90} />
+      </Stack>
+    </Flex>
   );
 };
 export default NoConversation;

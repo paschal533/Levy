@@ -9,7 +9,7 @@ const SearchBar = ({
   setActiveSelect,
   handleSearch,
   clearSearch,
-} : any) => {
+}: any) => {
   const [search, setSearch] = useState("");
   const [toggle, setToggle] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);

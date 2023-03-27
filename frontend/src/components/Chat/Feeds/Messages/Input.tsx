@@ -6,16 +6,14 @@ import toast from "react-hot-toast";
 import { SendMessageArguments } from "../../../../../../backend/src/util/types";
 import MessageOperations from "../../../../graphql/operations/message";
 import { MessagesData } from "../../../../util/types";
-import { useContext } from 'react';
+import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 
 interface MessageInputProps {
   conversationId: string;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({
-  conversationId,
-}) => {
+const MessageInput: React.FC<MessageInputProps> = ({ conversationId }) => {
   const [messageBody, setMessageBody] = useState("");
   const [sendMessage] = useMutation<
     { sendMessage: boolean },
@@ -28,7 +26,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const onSendMessage = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if(!senderId || !userName || !profileImage) return;
+    if (!senderId || !userName || !profileImage) return;
 
     try {
       // call sendMessage mutation
@@ -70,7 +68,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                   sender: {
                     id: senderId,
                     username: userName,
-                    image: profileImage
+                    image: profileImage,
                   },
                   createdAt: new Date(Date.now()),
                   updatedAt: new Date(Date.now()),
@@ -100,7 +98,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           placeholder="New message"
           size="md"
           resize="none"
-          borderColor= "white"
+          borderColor="white"
           _focus={{
             boxShadow: "none",
             border: "1px solid",
