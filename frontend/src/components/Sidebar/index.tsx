@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Sidebar = () => {
-  const [item, setItem] = useState<string>("nft");
+  const [item, setItem] = useState<string>("chat");
   const router = useRouter();
 
   const onClick = (page: string) => {
@@ -61,7 +61,7 @@ const Sidebar = () => {
 
         <Flex
           onClick={() => {
-            setItem("chat"), onClick("chat");
+            setItem("chat"), router.push("/");
           }}
           py={2}
           px={2}
@@ -74,13 +74,13 @@ const Sidebar = () => {
         >
           <BsChatDots fontSize={25} />
           <Text ml={5} fontSize={20} fontWeight="bold">
-            Chats
+            Socials
           </Text>
         </Flex>
 
         <Flex
           onClick={() => {
-            setItem("nft"), router.push("/");
+            setItem("nft"), onClick("nft-store");
           }}
           py={2}
           px={2}
@@ -99,7 +99,7 @@ const Sidebar = () => {
 
         <Flex
           onClick={() => {
-            setItem("buy"), onClick("buy");
+            setItem("buy"), onClick("Tokens");
           }}
           py={2}
           px={2}
@@ -112,7 +112,7 @@ const Sidebar = () => {
         >
           <IoMdWallet fontSize={25} />
           <Text ml={5} fontSize={20} fontWeight="bold">
-            Buy
+            Tokens
           </Text>
         </Flex>
       </Box>

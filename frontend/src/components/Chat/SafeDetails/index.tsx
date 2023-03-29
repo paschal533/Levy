@@ -240,7 +240,7 @@ const SafeDetails = () => {
                 value={ethAmount}
               />
               <p className="font-poppins text-white  font-semibold text-xl">
-                Ether
+                xDAI
               </p>
             </div>
             <Button

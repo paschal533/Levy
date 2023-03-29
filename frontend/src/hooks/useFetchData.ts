@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as API from "@/services/api";
 import { ethers } from "ethers";
 import { useEffect, useState, useContext } from "react";
@@ -13,6 +14,23 @@ export const useFetchData = () => {
   const [nfts, setNfts] = useState<any>([]);
   const [nftsCopy, setNftsCopy] = useState([]);
   const xDai = "xDai";
+
+  const queryTopTenCrypto = async () => {
+    let apiResponse = await API.getTopTenCoins();
+    let filteredResponse = [];
+
+    for (let i = 0; i < apiResponse.length; i++) {
+      const element = apiResponse[i];
+      if (element.cmc_rank <= 50) filteredResponse.push(element);
+    }
+
+    setTopTenTokens(filteredResponse);
+    setLoadingData(false);
+  };
+
+  useEffect(() => {
+    queryTopTenCrypto();
+  }, []);
 
   const { privateKey, currentAccount } = useContext(AuthContext);
   const fetchNFTs = async () => {
@@ -159,6 +177,8 @@ export const useFetchData = () => {
       );
     }
   };
+
+   
 
   return {
     topTenTokens,

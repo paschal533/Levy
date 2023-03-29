@@ -10,6 +10,7 @@ import CreateNFT from "../NFT-Store/create-nft";
 import NFTDetails from "../NFT-Store/nft-details";
 import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
+import Tokens from "../Tokens/Token"
 
 const Chat = () => {
   const router = useRouter();
@@ -20,33 +21,33 @@ const Chat = () => {
 
   return (
     <>
-      {!page && !price && !create ? (
-        <NFTStore />
-      ) : page === "profile" ? (
+      {page === "profile" ? (
         <Profile />
+      ): page === "Tokens" ? (
+        <Tokens />
       ) : page === "buy" ? (
         <Buy />
-      ) : create == "create-nft" ? (
+      ): create == "create-nft" ? (
         <CreateNFT />
       ) : price ? (
         <NFTDetails />
-      ) : (
-        <Flex
-          overflowY="scroll"
-          borderRadius={30}
-          height="100vh"
-          width="100vw"
-          overflowX="hidden"
-        >
-          <ConversationWrapper />
-          <FeedWrapper />
-          {conversationId &&
-          conversactionAddress !==
-            "0x0000000000000000000000000000000000000000" ? (
-            <SafeDetails />
-          ) : null}
-        </Flex>
-      )}
+      ) : page == "nft-store" ? (
+        <NFTStore />
+      ): (<Flex
+        overflowY="scroll"
+        borderRadius={30}
+        height="100vh"
+        width="100vw"
+        overflowX="hidden"
+      >
+        <ConversationWrapper />
+        <FeedWrapper />
+        {conversationId &&
+        conversactionAddress !==
+          "0x0000000000000000000000000000000000000000" ? (
+          <SafeDetails />
+        ) : null}
+      </Flex>)}
     </>
   );
 };

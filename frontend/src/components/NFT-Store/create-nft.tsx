@@ -90,7 +90,8 @@ const CreateItem = () => {
       const url = `https://levy.infura-ipfs.io/ipfs/${added.path}`;
       /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
       await createSale(url, formInput.price);
-      router.push("/");
+      const page = "nft-store"
+      router.push({ query: { page } });
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
