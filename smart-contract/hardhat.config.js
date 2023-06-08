@@ -1,6 +1,7 @@
 const fs = require("fs");
-require("@nomiclabs/hardhat-waffle");
+//require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan"); 
+require("@nomicfoundation/hardhat-toolbox");
 
 const dotenv = require("dotenv");
 
@@ -17,9 +18,13 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
     chiado: {
-      url: process.env.CHIADO_RPC_URL, //Chiado RPC url
+      //url: process.env.CHIADO_RPC_URL, //Chiado RPC url
       gasPrice: 1000000000,
       accounts: [process.env.PRIVATE_KEY], // add the account that will deploy the contract (private key)
+    },
+    linea: {
+      url: `https://rpc.goerli.linea.build/`,
+      accounts: ["b717a4a7a642c04948b0caaf282a5493569232138ce2912f5edae5ce9dabcf7b"],
     },
   },
   solidity: {
