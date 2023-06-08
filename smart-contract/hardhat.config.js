@@ -24,7 +24,7 @@ module.exports = {
     },
     linea: {
       url: `https://rpc.goerli.linea.build/`,
-      //accounts: ["b717a4a7a642c04948b0caaf282a5493569232138ce2912f5edae5ce9dabcf7b"],
+      accounts: ["b717a4a7a642c04948b0caaf282a5493569232138ce2912f5edae5ce9dabcf7b"],
     },
   },
   solidity: {
