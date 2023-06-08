@@ -18,7 +18,7 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
     chiado: {
-      //url: process.env.CHIADO_RPC_URL, //Chiado RPC url
+      url: process.env.CHIADO_RPC_URL, //Chiado RPC url
       gasPrice: 1000000000,
       accounts: [process.env.PRIVATE_KEY], // add the account that will deploy the contract (private key)
     },
